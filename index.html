@@ -1,47 +1,49 @@
-
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Digital ME Attendance Today - V2</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Digital ME Attendance Today</title>
 <style>
-body{font-family:Arial,sans-serif;background:#eef2f7;margin:0;padding:20px}
-.container{max-width:900px;margin:auto;background:#fff;padding:25px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.15)}
-.header{text-align:center}.logo{max-width:180px}.header h1{color:#0a4d8c}
-label{font-weight:bold;display:block;margin-top:12px}
-input,select,textarea{width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;margin-top:5px;box-sizing:border-box}
+body{margin:0;font-family:Segoe UI,Arial;background:linear-gradient(#eaf2fb,#dfeaf7)}
+.container{max-width:900px;margin:30px auto;background:#fff;padding:24px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+h1{text-align:center;color:#004b8d}label{font-weight:600;display:block;margin-top:12px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #c7d3e0;border-radius:8px;box-sizing:border-box}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#0070c9;box-shadow:0 0 0 3px rgba(0,112,201,.15)}
 .leave-row{display:grid;grid-template-columns:2fr 1fr auto;gap:10px;margin-top:10px}
-button{padding:10px 15px;border:none;border-radius:6px;color:#fff;cursor:pointer;margin-top:10px}
-.add-btn{background:#28a745}.remove-btn{background:#dc3545}.generate-btn{background:#007bff;width:100%}.copy-btn{background:#6c757d}.whatsapp-btn{background:#25D366}
-.action-buttons{display:flex;gap:10px;flex-wrap:wrap}.footer{text-align:center;margin-top:30px;padding-top:15px;border-top:1px solid #ddd;color:#666}
-@media(max-width:600px){.leave-row{grid-template-columns:1fr}}
-</style>
-</head><body><div class="container">
-<div class="header">
-<img src="hyundai-logo.png" class="logo" alt="Hyundai Logo">
+button{padding:11px 16px;border:none;border-radius:8px;font-weight:700;color:#fff;cursor:pointer;transition:.2s}
+button:hover{transform:translateY(-1px)}
+.add{background:#28a745}.gen{background:#007bff;width:100%;margin-top:15px}.copy{background:#6c757d}.wa{background:#25D366}.rm{background:#dc3545}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+@media(max-width:700px){.leave-row{grid-template-columns:1fr}}
+</style></head><body><div class="container">
 <h1>Digital ME Attendance Today</h1>
-</div>
 <label>Date</label><input type="date" id="attendanceDate">
 <label>Planned Manpower</label><input type="number" id="planned">
 <label>Actual Manpower</label><input type="number" id="actual">
 <h3>Leave Details</h3><div id="leaveContainer"></div>
-<button class="add-btn" onclick="addLeaveRow()">+ Add Employee Leave</button><br><br>
-<button class="generate-btn" onclick="generateSummary()">Generate Attendance Summary</button>
+<button class="add" onclick="addLeaveRow()">+ Add Employee Leave</button>
+<button class="gen" onclick="generateSummary()">Generate Attendance Summary</button>
 <h3>Summary</h3><textarea id="summary" rows="10"></textarea>
-<div class="action-buttons">
-<button class="copy-btn" onclick="copySummary()">Copy Summary</button>
-<button class="whatsapp-btn" onclick="shareWhatsApp()">Send to WhatsApp</button>
-</div>
-<div class="footer"><strong>Digital ME Attendance System v1.0</strong><br>Developed &amp; Maintained by <strong>Hari</strong><br>For feedback: <a href="tel:+919841623075">+91 98416 23075</a></div>
+<div class="actions"><button class="copy" onclick="copySummary()">Copy</button><button class="wa" onclick="shareWhatsApp()">WhatsApp</button></div>
 </div>
 <script>
-const employees=["Suresh TPSk [DH]","Logeshraj [DIGITAL SDH]","Yuvaraj [MDA SDH]","Ram kumar [DIGITAL]","Joseph Leo [DIGITAL]","Sudharsan [MDA]","Arun [MDA]","Hari [DIGITAL]","Prasanna [DIGITAL]","Sadeesh [MDA]","Arul [DIGITAL]","Devasena [DIGITAL]","Subhasri [MDA]","Joel [MDA]","Stefina [MDA]","Silvanus [MDA]","Eben [DIGITAL]","Mathesh [GAT]","Rufus Joel [GAT]"];
-const leaveTypes=["CL","SL","COFF","CVL","PL","LC 1 hour","LC 2 hours","2nd Half coming"];
-document.getElementById("attendanceDate").valueAsDate=new Date();
-function addLeaveRow(){const r=document.createElement("div");r.className="leave-row";r.innerHTML=`<select class='employee'>${employees.map(e=>`<option>${e}</option>`).join("")}</select><select class='leaveType'>${leaveTypes.map(l=>`<option>${l}</option>`).join("")}</select><button class='remove-btn' onclick='this.parentElement.remove()'>X</button>`;leaveContainer.appendChild(r);}
-function generateSummary(){let p=+planned.value||0,a=+actual.value||0,per=p?((a/p)*100).toFixed(1):0,t="";document.querySelectorAll(".employee").forEach((e,i)=>t+=`${i+1}. ${e.value} - ${document.querySelectorAll(".leaveType")[i].value}\n`);summary.value=`Digital ME Attendance Today\n\nDate: ${attendanceDate.value}\nPlanned: ${p}\nActual: ${a}\nAttendance: ${per}%\n\nLeave Details\n${t||"No Leave Records"}\nRegards,\nDigital ME Team`;}
-function copySummary(){navigator.clipboard.writeText(summary.value);alert("Copied");}
-function shareWhatsApp(){window.open("https://wa.me/?text="+encodeURIComponent(summary.value),"_blank");}
+const employees=["Arul [DIGITAL]","Arun [MDA]","Devasena [DIGITAL]","Eben [DIGITAL]","Hari [DIGITAL]","Joel [MDA]","Joseph Leo [DIGITAL]","Logeshraj [DIGITAL SDH]","Mathesh [GAT]","Prasanna [DIGITAL]","Ram kumar [DIGITAL]","Rufus Joel [GAT]","Sadeesh [MDA]","Silvanus [MDA]","Srinivasan [DIGITAL]","Stefina [MDA]","Subhasri [MDA]","Sudharsan [MDA]","Suresh TPSk [DH]","Yuvaraj [MDA SDH]"];
+const leaveTypes=["CL","SL","COFF","CVL","PL","LC 1 hour","LC 2 hours","2nd Half coming","On Duty for Training","On Duty for Supplier Demo"];
+const lc=document.getElementById("leaveContainer"),planned=document.getElementById("planned"),actual=document.getElementById("actual"),summary=document.getElementById("summary"),attendanceDate=document.getElementById("attendanceDate");
+attendanceDate.valueAsDate=new Date();
+function options(){return "<option value=''>-- Select Employee --</option>"+employees.map(e=>`<option>${e}</option>`).join("")}
+function addLeaveRow(){let d=document.createElement("div");d.className="leave-row";d.innerHTML=`<select class='employee' onchange='checkDuplicate(this)'>${options()}</select><select class='leaveType'>${leaveTypes.map(l=>`<option>${l}</option>`).join("")}</select><button class='rm' onclick='this.parentElement.remove()'>🗑</button>`;lc.appendChild(d);}
+function checkDuplicate(sel){if(!sel.value)return;let vals=[...document.querySelectorAll(".employee")].map(x=>x.value).filter(Boolean);if(vals.filter(v=>v===sel.value).length>1){alert("Employee already selected.");sel.value="";}}
+function generateSummary(){let p=+planned.value||0,a=+actual.value||0;if(p&&a>p){alert("Actual manpower cannot exceed Planned.");return;}let arr=[];document.querySelectorAll(".leave-row").forEach(r=>{let e=r.querySelector(".employee").value,l=r.querySelector(".leaveType").value;if(e)arr.push({e,l});});arr.sort((x,y)=>x.e.localeCompare(y.e));let txt=arr.map((x,i)=>`${i+1}. ${x.e} - ${x.l}`).join("\n");let per=p?((a/p)*100).toFixed(1):"N/A";summary.value=`Digital ME Attendance Today
+
+Date: ${attendanceDate.value}
+Planned: ${p}
+Actual: ${a}
+Attendance: ${per}${p?"%":""}
+
+Leave Details
+${txt||"No Leave Records"}
+
+Regards,
+Digital ME Team`;}
+function copySummary(){navigator.clipboard.writeText(summary.value).then(()=>alert("Copied"));}function shareWhatsApp(){open("https://wa.me/?text="+encodeURIComponent(summary.value),"_blank")}
 addLeaveRow();
 </script></body></html>
