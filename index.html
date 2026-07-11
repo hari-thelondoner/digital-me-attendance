@@ -18,7 +18,7 @@ button:hover{transform:translateY(-1px)}
 <label>Date</label><input type="date" id="attendanceDate">
 <label>Planned Manpower</label><input type="number" id="planned">
 <label>Actual Manpower</label><input type="number" id="actual">
-<h3>Leave Details</h3><div id="leaveContainer"></div>
+<<div id="dayLabel" style="margin-top:8px;font-weight:bold;color:#004b8d"></div><h3>Leave Details</h3><div id="leaveContainer"></div>
 <button class="add" onclick="addLeaveRow()">+ Add Employee Leave</button>
 <button class="gen" onclick="generateSummary()">Generate Attendance Summary</button>
 <h3>Summary</h3><textarea id="summary" rows="10"></textarea>
@@ -28,16 +28,16 @@ button:hover{transform:translateY(-1px)}
 const employees=["Arul [DIGITAL]","Arun [MDA]","Devasena [DIGITAL]","Eben [DIGITAL]","Hari [DIGITAL]","Joel [MDA]","Joseph Leo [DIGITAL]","Logeshraj [DIGITAL SDH]","Mathesh [GAT]","Prasanna [DIGITAL]","Ram kumar [DIGITAL]","Rufus Joel [GAT]","Sadeesh [MDA]","Silvanus [MDA]","Srinivasan [DIGITAL]","Stefina [MDA]","Subhasri [MDA]","Sudharsan [MDA]","Suresh TPSk [DH]","Yuvaraj [MDA SDH]"];
 const leaveTypes=["CL","SL","COFF","CVL","PL","LC 1 hour","LC 2 hours","2nd Half coming","On Duty for Training","On Duty for Supplier Demo"];
 const lc=document.getElementById("leaveContainer"),planned=document.getElementById("planned"),actual=document.getElementById("actual"),summary=document.getElementById("summary"),attendanceDate=document.getElementById("attendanceDate");
-attendanceDate.valueAsDate=new Date();
+attendanceDate.valueAsDate=new Date();updateDay();attendanceDate.addEventListener("change",updateDay);function updateDay(){const d=new Date(attendanceDate.value);const days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];dayLabel.textContent="Day : "+days[d.getDay()];}
 function options(){return "<option value=''>-- Select Employee --</option>"+employees.map(e=>`<option>${e}</option>`).join("")}
 function addLeaveRow(){let d=document.createElement("div");d.className="leave-row";d.innerHTML=`<select class='employee' onchange='checkDuplicate(this)'>${options()}</select><select class='leaveType'>${leaveTypes.map(l=>`<option>${l}</option>`).join("")}</select><button class='rm' onclick='this.parentElement.remove()'>🗑</button>`;lc.appendChild(d);}
 function checkDuplicate(sel){if(!sel.value)return;let vals=[...document.querySelectorAll(".employee")].map(x=>x.value).filter(Boolean);if(vals.filter(v=>v===sel.value).length>1){alert("Employee already selected.");sel.value="";}}
-function generateSummary(){let p=+planned.value||0,a=+actual.value||0;if(p&&a>p){alert("Actual manpower cannot exceed Planned.");return;}let arr=[];document.querySelectorAll(".leave-row").forEach(r=>{let e=r.querySelector(".employee").value,l=r.querySelector(".leaveType").value;if(e)arr.push({e,l});});arr.sort((x,y)=>x.e.localeCompare(y.e));let txt=arr.map((x,i)=>`${i+1}. ${x.e} - ${x.l}`).join("\n");let per=p?((a/p)*100).toFixed(1):"N/A";summary.value=`Digital ME Attendance Today
+function generateSummary(){let p=+planned.value||0,a=+actual.value||0;if(p&&a>p){alert("Actual manpower cannot exceed Planned.");return;}let arr=[];document.querySelectorAll(".leave-row").forEach(r=>{let e=r.querySelector(".employee").value,l=r.querySelector(".leaveType").value;if(e)arr.push({e,l});});arr.sort((x,y)=>x.e.localeCompare(y.e));let txt=arr.map((x,i)=>`${i+1}. ${x.e} - ${x.l}`).join("\n");let d=new Date(attendanceDate.value);let wk=d.getDay()==0||d.getDay()==6;let per=wk?`${a} / ${p} (Weekend)`:(p?((a/p)*100).toFixed(1)+"%":"N/A");summary.value=`Digital ME Attendance Today
 
 Date: ${attendanceDate.value}
 Planned: ${p}
 Actual: ${a}
-Attendance: ${per}${p?"%":""}
+Attendance: ${per}
 
 Leave Details
 ${txt||"No Leave Records"}
